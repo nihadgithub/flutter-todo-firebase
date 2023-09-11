@@ -16,9 +16,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  AuthService auth = AuthService();
 
-  PopupMenuItems? selectedMenu;
+  /*PopupMenuItems? selectedMenu;*/
+
+  var selectedMenu = '';
 
   @override
   Widget build(BuildContext context) {
@@ -31,25 +32,26 @@ class _HomeScreenState extends State<HomeScreen> {
           /*IconButton(onPressed: (){
           }, icon: Icon(Icons.more_vert))*/
 
-          PopupMenuButton<PopupMenuItems>(
-              initialValue: selectedMenu,
-              onSelected: (PopupMenuItems item) {
+          PopupMenuButton(
+              /*initialValue: selectedMenu,*/
+              onSelected: (item) {
                 setState(() {
-                  selectedMenu = item;
+                  selectedMenu = item.toString();
                 });
+                Navigator.pushNamed(context, item.toString());
               },
               itemBuilder: (BuildContext context) =>
-                  <PopupMenuEntry<PopupMenuItems>>[
-                    const PopupMenuItem<PopupMenuItems>(
-                      value: PopupMenuItems.settings,
+                  <PopupMenuEntry>[
+                    const PopupMenuItem(
+                      value: '/settings',
                       child: Text('Settings'),
                     ),
-                    const PopupMenuItem<PopupMenuItems>(
-                      value: PopupMenuItems.about,
+                    const PopupMenuItem(
+                      value: '/settings',
                       child: Text('About'),
                     ),
-                    const PopupMenuItem<PopupMenuItems>(
-                      value: PopupMenuItems.logOut,
+                    const PopupMenuItem(
+                      value: '/settings',
                       child: Text('Logout'),
                     ),
                   ])
@@ -77,11 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-              onPressed: () {
-                auth.signOut(context);
-              },
-              child: Text("Logout")),
 
           Flexible(child: TodoList()),
 

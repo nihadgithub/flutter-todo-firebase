@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase/screens/home_screen.dart';
+import 'package:todo_firebase/screens/settings_screen.dart';
 import 'package:todo_firebase/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
       ),
       //home: const HomeScreen(title: 'ToDo FireBase'),
       home: WelcomeScreen(),
+      routes: {
+        '/settings':(context)=>SettingsScreen(),
+      },
     );
   }
 }
