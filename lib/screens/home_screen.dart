@@ -6,12 +6,19 @@ import 'package:todo_firebase/widgets/todo_list.dart';
 
 import '../services/firebase_services.dart';
 
-enum popupMenuItems  {logOut}
+enum PopupMenuItems { settings, about, logOut }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   AuthService auth = AuthService();
+
+  PopupMenuItems? selectedMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +28,31 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         leading: Text(""),
         actions: [
-          IconButton(onPressed: (){
+          /*IconButton(onPressed: (){
+          }, icon: Icon(Icons.more_vert))*/
 
-          }, icon: Icon(Icons.more_vert))
+          PopupMenuButton<PopupMenuItems>(
+              initialValue: selectedMenu,
+              onSelected: (PopupMenuItems item) {
+                setState(() {
+                  selectedMenu = item;
+                });
+              },
+              itemBuilder: (BuildContext context) =>
+                  <PopupMenuEntry<PopupMenuItems>>[
+                    const PopupMenuItem<PopupMenuItems>(
+                      value: PopupMenuItems.settings,
+                      child: Text('Settings'),
+                    ),
+                    const PopupMenuItem<PopupMenuItems>(
+                      value: PopupMenuItems.about,
+                      child: Text('About'),
+                    ),
+                    const PopupMenuItem<PopupMenuItems>(
+                      value: PopupMenuItems.logOut,
+                      child: Text('Logout'),
+                    ),
+                  ])
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -48,14 +77,15 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ElevatedButton(onPressed: (){
+          ElevatedButton(
+              onPressed: () {
                 auth.signOut(context);
-          }, child: Text("Logout")),
+              },
+              child: Text("Logout")),
 
           Flexible(child: TodoList()),
 
-
-          Container(height: 200,color: Colors.red,)
+          //Container(height: 200,color: Colors.red,)
         ],
       ),
       //bottomNavigationBar: BottomAppBar(),
