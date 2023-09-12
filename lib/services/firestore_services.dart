@@ -11,6 +11,13 @@ class TodoFirestore{
       });
   }
 
-
+  Stream<QuerySnapshot<Object?>> getTodo() {
+    return todosFirestore.collection("todos").snapshots();
+  }
+  Future <void> updateTodo(String todoId,bool isChecked) async{
+    await todosFirestore.collection("todos").doc(todoId).update({
+      "isChecked": isChecked
+    });
+  }
 
 }
