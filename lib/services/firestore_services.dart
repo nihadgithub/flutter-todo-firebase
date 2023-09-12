@@ -27,5 +27,8 @@ class TodoFirestore{
     });
   }
 
+  Future <void> deleteTodo(String todoId) async{
+    await todosFirestore.collection("todos").doc(todoId).delete();
+  }
 
 }

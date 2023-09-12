@@ -8,11 +8,17 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("Settings"),
+        title: Text("About"),
       ),
-      body: Column(
+      body: ListView(
         children: [
-           Text("About"),
+          ListTile(
+            title: Center(child: Text("Developed by Nihad",style: TextStyle(color: Colors.green[900]),)),
+            onTap: (){},
+
+            splashColor: Colors.green.withOpacity(.3),
+            hoverColor: Colors.green,
+          )
         ],
       ),
     );

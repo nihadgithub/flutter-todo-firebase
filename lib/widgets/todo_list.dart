@@ -65,7 +65,41 @@ class _TodoListState extends State<TodoList> {
                                   ListTile(
                                     title: Text("Delete"),
                                     leading: Icon(Icons.delete),
-                                    onTap: (){},
+                                    onTap: (){
+                                      Navigator.of(context).pop();
+                                      showDialog<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Do you want to delete?'),
+                                            /*content: const Text(
+                                              'dialog ',
+                                            ),*/
+                                            actions: <Widget>[
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  textStyle: Theme.of(context).textTheme.labelLarge,
+                                                ),
+                                                child: const Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                style: TextButton.styleFrom(
+                                                  textStyle: Theme.of(context).textTheme.labelLarge,
+                                                ),
+                                                child: const Text('Yes'),
+                                                onPressed: () async{
+                                                  await TodoFirestore().deleteTodo(data.id);
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
                                   ),
                                 ],
                               ),
@@ -88,19 +122,4 @@ class _TodoListState extends State<TodoList> {
                   });
         });
   }
-
-  /*Widget build(BuildContext context) {
-    return ListView(
-      children: todoList
-          .map((e) => CheckboxListTile(
-              value: e.isChecked,
-              title: Text(e.text.toString()),
-              onChanged: (bool? val) {
-                setState(() {
-                  e.isChecked = val;
-                });
-              }))
-          .toList(),
-    );
-  }*/
 }
