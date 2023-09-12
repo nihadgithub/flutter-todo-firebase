@@ -8,19 +8,35 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         title: Text("Settings"),
       ),
-      body: Column(
+      body: ListView(
         children: [
-          ElevatedButton(
-              onPressed: () {
-                auth.signOut(context);
-              },
-              child: Text("Logout")),
+          ListTile(
+            title: Text("Logout",style: TextStyle(color: Colors.red[900]),),
+            onTap: (){
+              auth.signOut(context);
+            },
+
+
+            splashColor: Colors.red.withOpacity(.3),
+            hoverColor: Colors.blue,
+          )
         ],
       ),
     );
   }
 }
+
+/*
+
+Column(
+children: [
+ElevatedButton(
+onPressed: () {
+auth.signOut(context);
+},
+child: Text("Logout")),
+],
+),*/

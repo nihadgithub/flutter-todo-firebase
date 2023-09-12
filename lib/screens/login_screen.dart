@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_firebase/services/preferences.dart';
 import 'package:todo_firebase/widgets/utilities/headings.dart';
 
 import '../services/firebase_services.dart';
@@ -19,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("hello-------");
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -62,8 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             setState(() {
                               loading =true;
                             });
-                            await auth.login(email: _emailController.text, password: _passwordController.text);
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                            String? status =  await auth.login(email: _emailController.text, password: _passwordController.text);
+                            if(status!=null && status=='Success' ){
+                              await setStatus();
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                            }
+
                             setState(() {
                               loading = false;
                             });

@@ -1,15 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase/services/firestore_services.dart';
 import 'package:todo_firebase/widgets/utilities/headings.dart';
 
 import 'package:todo_firebase/models/todo_model.dart';
 
-class TodoForm extends StatelessWidget {
-  TodoForm({super.key});
+class EditTodo extends StatelessWidget {
+  EditTodo({super.key, required this.data});
   TextEditingController todoText = TextEditingController();
+  DocumentSnapshot data;
 
   @override
   Widget build(BuildContext context) {
+
+    todoText.text = data['text'];
+
     return Padding(
       //padding: const EdgeInsets.all(15),
       padding: EdgeInsets.only(
@@ -24,7 +29,7 @@ class TodoForm extends StatelessWidget {
           SizedBox(
             height: 35,
           ),
-          Heading(type: 2, text: "Add To Do"),
+          Heading(type: 2, text: "Edit To Do"),
           SizedBox(
             height: 35,
           ),
@@ -32,6 +37,7 @@ class TodoForm extends StatelessWidget {
               controller: todoText,
               minLines: 2,
               maxLines: 10,
+
               decoration: InputDecoration(
                 hintText: "Enter new item ",
                 filled: true,
@@ -46,16 +52,16 @@ class TodoForm extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () async{
                   TodoModel todoModel = TodoModel(text: todoText.text,isChecked: false);
-                  await TodoFirestore().addTodo(todoModel);
+                  await TodoFirestore().editTodo(data.id,todoText.text);
                   Navigator.pop(context);
                 },
-                label: Text("Add"),
-                icon: Icon(Icons.add),
+                label: Text("Save"),
+                icon: Icon(Icons.save),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
                     padding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 22)),
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 22)),
               )),
           SizedBox(
             height: 35,

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_firebase/models/todo_model.dart';
 import 'package:todo_firebase/services/firestore_services.dart';
+import 'package:todo_firebase/widgets/edit_todo.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({super.key});
@@ -34,12 +35,56 @@ class _TodoListState extends State<TodoList> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot data = snapshot.data!.docs[index];
                     //print(data.id);
-                    return CheckboxListTile(
+                    return GestureDetector(
+                      onLongPress: () {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SingleChildScrollView(
+                              child: Column(
+
+                                children: [
+                                  SizedBox(height: 15,),
+                                  ListTile(
+                                    title: Text("Edit"),
+                                    leading: Icon(Icons.edit),
+                                    onTap: (){
+                                      Navigator.pop(context);
+                                      showModalBottomSheet<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SingleChildScrollView(child: EditTodo(data: data,));
+                                        },
+                                        //useSafeArea: true,
+                                        backgroundColor: Colors.white,
+                                        //shape: ContinuousRectangleBorder(),
+                                        isScrollControlled: true,
+                                      );
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text("Delete"),
+                                    leading: Icon(Icons.delete),
+                                    onTap: (){},
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          //useSafeArea: true,
+                          backgroundColor: Colors.white,
+                          //shape: ContinuousRectangleBorder(),
+                          //isScrollControlled: true,
+                        );
+                      },
+                      child: CheckboxListTile(
                         title: Text(data['text']),
                         value: data['isChecked'],
                         onChanged: (bool? newValue) {
                           todoObject.updateTodo(data.id, newValue!);
-                        });
+                        },
+                      ),
+                    );
                   });
         });
   }

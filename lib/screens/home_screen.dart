@@ -47,13 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text('Settings'),
                     ),
                     const PopupMenuItem(
-                      value: '/settings',
+                      value: '/about',
                       child: Text('About'),
                     ),
-                    const PopupMenuItem(
+                    /*const PopupMenuItem(
                       value: '/settings',
                       child: Text('Logout'),
-                    ),
+                    ),*/
                   ])
         ],
       ),

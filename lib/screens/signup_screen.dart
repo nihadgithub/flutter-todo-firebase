@@ -3,6 +3,8 @@ import 'package:todo_firebase/widgets/utilities/headings.dart';
 import 'package:todo_firebase/screens/home_screen.dart';
 import 'package:todo_firebase/services/firebase_services.dart';
 
+import '../services/preferences.dart';
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
@@ -17,6 +19,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   AuthService auth = AuthService();
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -79,17 +82,31 @@ class _SignupScreenState extends State<SignupScreen> {
                           //print('Email : ${_emailController.text},Password : ${_passwordController.text},Name : ${_nameController.text}');
                           if(_emailController.text.isNotEmpty && _passwordController.text.isNotEmpty && _nameController.text.isNotEmpty){
 
-                            String ? sucess = await auth.registration(email: _emailController.text, password: _passwordController.text);
+                            setState(() {
+                              loading =true;
+                            });
 
-                            if(sucess==''){
+                            String ? status = await auth.registration(email: _emailController.text, password: _passwordController.text);
 
+                            if(status!=null && status =='Success'){
+                              String? status =  await auth.login(email: _emailController.text, password: _passwordController.text);
+                              if(status!=null && status=='Success' ){
+                                await setStatus();
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                              }
                             }
+
+                            setState(() {
+                              loading =false;
+                            });
+
+
                           }
 
 
 
                           },
-                        child: Text("Sign up"),
+                        child: loading ? CircularProgressIndicator(color: Colors.white,)   :Text("Sign up"),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             foregroundColor: Colors.white,

@@ -20,4 +20,12 @@ class TodoFirestore{
     });
   }
 
+  Future <void> editTodo(String todoId,String text) async{
+    print(text);
+    await todosFirestore.collection("todos").doc(todoId).update({
+      "text": text
+    });
+  }
+
+
 }
